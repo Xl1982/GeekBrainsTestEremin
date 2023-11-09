@@ -31,15 +31,14 @@ def create_database(): # создаем бд
     conn.close() #закрываем бд
 
 def extract_links(url, output_file, conn):
-    response = requests.get(url) # отправляем get запрос на url
+    response = requests.get(url)# отправляем get запрос на url
     soup = BeautifulSoup(response.text, "html.parser") # создаем объект для BS(для парсинга)
-    text = soup.get_text() # получаем текст HTML
+    text = soup.get_text()# получаем текст HTML
     # регулярное выражение для поиска ссылки начинающейся с t.me
     telegram_links = re.findall(r'https://t\.me/\S+', text)
 
-    # пока файл открыт, обходим все ссылки,
+    with open(output_file, 'a', encoding='utf-8') as file:   # пока файл открыт, обходим все ссылки,
     # печатаем и записываем каждую в файл с новой строки
-    with open(output_file, 'a') as file:
         for link in telegram_links:
             print(link)
             file.write(link + '\n')
@@ -52,11 +51,11 @@ def extract_links(url, output_file, conn):
         ''', (link,))
         print(f"Добавлена ссылка: {link}")
 
-    conn.commit() # сохраняем изменения
+    conn.commit()# сохраняем изменения
 
 # основная функция
 def main():
-    create_database() # создаем бз
+    create_database() # создаем бд
 
     conn = sqlite3.connect(DATABASE_FILE)# подключения к бд
     # Очищаем содержимое файла перед началом записи
