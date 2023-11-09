@@ -1,3 +1,5 @@
+from time import sleep
+
 import requests # библиотека для https запросов
 from bs4 import BeautifulSoup # библиотека BS для парсинга Html
 import re # регулярные выражения
@@ -63,6 +65,8 @@ def main():
 
     # Перебираем все страницы с 1 по NUM_PAGES
     for page_number in range(1, NUM_PAGES + 1):
+        # устанавливаем задержку в две секунды между действиями, чтобы не получить блок
+        sleep(2)
         page_url = BASE_URL.format(page_number) # формируем url страницы
         print(f"Поиск на странице {page_number}...")
         extract_links(page_url, OUTPUT_FILE, conn) # извлекаем ссылку с текущей страницы
